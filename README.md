@@ -20,6 +20,9 @@ data concerning the corona virus.
 For the implementation of our project we are using a Full Stack approach with Python running in the backand
 and a JavaScript Frontend. The Visualizations were created with D3js, the styling is done via bootstrap.
 
+## Status
+![D3](/img/status_1805.png)
+
 
 ### Requirements.txt
 requirements.txt is genereated with:

@@ -22,7 +22,7 @@
   </nav>
 
   <div class="container-fluid">
-    <div class="row" style="height: 20vh;">
+    <div class="row" style="height: 15vh;">
       <div class="col-lg-3" style="border: 1px solid grey;" id="kpi-1">
         <p>KPI 1</p>
       </div>
@@ -36,30 +36,16 @@
         <p>KPI 4</p>
       </div>
     </div>
-    <div class="row" style="height: 50vh;">
-      <div class="col-lg-6" style="border: 1px solid grey;" id="chart-1">
-        <p>Chart 1</p>
-      </div>
-      <div class="col-lg-6" style="border: 1px solid grey;" id="chart-2">
-        <p>Chart 2</p>
-      </div>
-    </div>
-    <div class="row" style="border: 1px solid grey; height: 10vh;" id="timeline">
-      <div class="col-lg-12">
-
-      </div>
-    </div>
-    <div class="row" style="height: 35vh;">
-      <div class="col-lg-6" style="border: 1px solid grey;" id="chart-3">
-        <p>Chart 3</p>
-      </div>
-      <div class="col-lg-6" style="border: 1px solid grey;" id="chart-4">
-        <p>Chart 4</p>
-      </div>
+    <div class="row" style="height: 100vh;">
+      <div class="col-lg-12" style="border: 1px solid grey;" id="chart-1"></div>
+     
     </div>
   </div>
   <script src="https://d3js.org/d3.v5.min.js"></script>
-  <script type="text/javascript" src="{{url_for('static', filename = 'js/app.js')}}"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://d3js.org/topojson.v2.min.js"></script>
+  <!--<script type="text/javascript" src="{{url_for('static', filename = 'js/app.js')}}"></script>-->
+  <script type="text/javascript" src="../static/js/app.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
   </script>

@@ -3,7 +3,7 @@ import tweepy
 import os
 from Data_Gathering.twitter_data import get_corona_tweets
 from Processing.sentiment_analysis import Classifier
-from env import consumer_key, consumer_secret, access_token, access_token_secret
+from env_gitignore import consumer_key, consumer_secret, access_token, access_token_secret
 
 
 class InitApplication:
