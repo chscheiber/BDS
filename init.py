@@ -3,6 +3,7 @@ import tweepy
 import os
 from Data_Gathering.twitter_data import get_corona_tweets
 from Processing.sentiment_analysis import Classifier
+from env import consumer_key, consumer_secret, access_token, access_token_secret
 
 
 class InitApplication:
@@ -13,10 +14,6 @@ class InitApplication:
     def init_tweepy_api(self):
         # Consumer keys and access tokens, used for OAuth
         from Frontend.api import app
-        consumer_key = "cOjc6hE5gxMcNedk3y9u3OR0o"
-        consumer_secret = "CM54GTZTEpGwxcwedZicIjckLtyYk10pQ8K54FEvM5tHf3zmMA"
-        access_token = "1246038981038477317-wzYjLQUgx9qJHJQPtDqMjKSjbSCO3a"
-        access_token_secret = "SncxBqMu3OVBetdkROr8cpD2wq7DojGMNC2EYyUR3o1Mo"
 
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, access_token_secret)
