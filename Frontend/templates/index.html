@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <link rel="shortcut icon" href="{{url_for('static', filename = 'favicon.ico')}}" />
+  <link rel="apple-touch-icon" href="{{url_for('static', filename = 'meta/apple-touch-icon.png')}}" />
+
+  <title>BDS Project</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+</head>
+
+<body>
+  <!-- As a link -->
+  <nav class="navbar navbar-light bg-primary" style="height: 10vh;">
+    <a class="navbar-brand" href="#" style="color: white;"><h1>BDS Project</h1></a>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row" style="height: 20vh;">
+      <div class="col-lg-3" style="border: 1px solid grey;" id="kpi-1">
+        <p>KPI 1</p>
+      </div>
+      <div class="col-lg-3" style="border: 1px solid grey;" id="kpi-2">
+        <p>KPI 2</p>
+      </div>
+      <div class="col-lg-3" style="border: 1px solid grey;" id="kpi-3">
+        <p>KPI 3</p>
+      </div>
+      <div class="col-lg-3" style="border: 1px solid grey;" id="kpi-4">
+        <p>KPI 4</p>
+      </div>
+    </div>
+    <div class="row" style="height: 50vh;">
+      <div class="col-lg-6" style="border: 1px solid grey;" id="chart-1">
+        <p>Chart 1</p>
+      </div>
+      <div class="col-lg-6" style="border: 1px solid grey;" id="chart-2">
+        <p>Chart 2</p>
+      </div>
+    </div>
+    <div class="row" style="border: 1px solid grey; height: 10vh;" id="timeline">
+      <div class="col-lg-12">
+
+      </div>
+    </div>
+    <div class="row" style="height: 35vh;">
+      <div class="col-lg-6" style="border: 1px solid grey;" id="chart-3">
+        <p>Chart 3</p>
+      </div>
+      <div class="col-lg-6" style="border: 1px solid grey;" id="chart-4">
+        <p>Chart 4</p>
+      </div>
+    </div>
+  </div>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename = 'js/app.js')}}"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+  </script>
+</body>
+
+</html>
