@@ -25,9 +25,22 @@ def infections(county=None):
     return jsonify(response), 200
 
 
+@app.route('/corona_date/<date>')
+def corona_per_date(date="2020-05-15"):
+    corona_data = corona_app.get_corona_data_per_date(date)
+    return jsonify(df_to_dict(corona_data)), 200
+
+
+@app.route('/counties')
+def counties():
+    all_counties = corona_app.get_counties()
+    return jsonify(df_to_dict(all_counties))
+
+
 @app.route('/Data/<path:path>')
 def send_file(path):
     return send_from_directory('../Data', path)
+
 
 # Routes for Tweets
 @app.route('/corona_tweets', methods=["GET"])

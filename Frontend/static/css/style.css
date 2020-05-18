@@ -15,3 +15,32 @@
     stroke-width: 0.5px;
     stroke-linejoin: round;
 }
+
+.top-row {
+    margin-top: 5px;
+}
+
+.card-header {
+    text-align: center;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.second-row {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#chart-2 {
+    display: flex;
+}
+
+.nav {
+    display: flex;
+}
+
+.btn {
+    margin-right: 10px;
+}

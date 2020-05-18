@@ -13,10 +13,10 @@ class Application:
         self.api = self.init_tweepy_api()
         self.classifier = Classifier()
         self.wd = os.getcwd()
+        self.cd = CoronaData()
 
     def init_tweepy_api(self):
         # Consumer keys and access tokens, used for OAuth
-        from Frontend.api import app
 
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, access_token_secret)
@@ -31,11 +31,21 @@ class Application:
         return all_tweets
 
     def get_corona_data(self):
-        corona_data = CoronaData().read_data(self.wd)
+        corona_data = self.cd.read_data(self.wd)
         return corona_data
 
+    def get_corona_data_per_date(self, date):
+        corona_data = self.cd.read_data(self.wd)
+        corona_data = corona_data[corona_data.date == date]
+        return corona_data
 
+    def get_counties(self):
+        file_path = f"{self.wd}/Data/fips_counties.csv"
+        df = pd.read_csv(file_path)
+        return df
 
-# Starting the Flask app
-#app.run()
-
+"""
+application = Application()
+print(application.get_corona_data_per_date("2020-02-15"))
+print(application.get_counties())
+"""

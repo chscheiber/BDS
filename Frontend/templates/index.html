@@ -18,31 +18,72 @@
 
 <body>
   <!-- As a link -->
-  <nav class="navbar navbar-light bg-primary" style="height: 10vh;">
+  <nav class="navbar navbar-light bg-primary">
     <a class="navbar-brand" href="#" style="color: white;">
       <h1>BDS Project</h1>
     </a>
+    <div style="flex-grow: 100;"></div>
+    <button type="button" class="btn btn-success">Start</button>
+    <button type="button" class="btn btn-danger">Pause</button>
+    <button type="button" class="btn btn-warning">Stop</button>
   </nav>
 
   <div class="container-fluid">
-    <div class="row" style="height: 15vh;">
-      <div class="col-lg-3" style="border: 1px solid grey;" id="kpi-1">
-        <p>KPI 1</p>
+    <div class="row top-row">
+      <div class="col-lg-3 col-md-6" id="kpi-1">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 id="kpi-1-text"></h5>
+          </div>
+          <div class="card-header">
+            Date
+          </div>
+        </div>
       </div>
-      <div class="col-lg-3" style="border: 1px solid grey;" id="kpi-2">
-        <p>KPI 2</p>
+      <div class="col-lg-3 col-md-6" id="kpi-2">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 id="kpi-2-text">110000</h5>
+          </div>
+          <div class="card-header">
+            Cases
+          </div>
+        </div>
       </div>
-      <div class="col-lg-3" style="border: 1px solid grey;" id="kpi-3">
-        <p>KPI 3</p>
+      <div class="col-lg-3 col-md-6" id="kpi-3">
+        <div class="card h-100">
+
+          <div class="card-body">
+            <h5 id="kpi-3-text">1000</h5>
+          </div>
+          <div class="card-header">
+            Deaths
+          </div>
+        </div>
       </div>
-      <div class="col-lg-3" style="border: 1px solid grey;" id="kpi-4">
-        <p>KPI 4</p>
+      <div class="col-lg-3 col-md-6" id="kpi-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 id="kpi-4-text">+ 0.5867</h5>
+          </div>
+          <div class="card-header">
+            Sentiment
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-8" style="border: 1px solid grey;" id="chart-1"></div>
-      <div class="col-lg-4"></div>
-
+    <div class="row second-row">
+      <div class="col-lg-8" id="chart-1"></div>
+      <div class="col-lg-4" id="chart-2">
+        <div class="card flex-grow-1">
+          <div class="card-body">
+            <h5 id="chart-2-card">+ 0.5867</h5>
+          </div>
+          <div class="card-header">
+            Sentiment
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <script src="https://d3js.org/d3.v5.min.js"></script>
