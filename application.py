@@ -12,7 +12,7 @@ class Application:
     def __init__(self):
         self.api = self.init_tweepy_api()
         self.classifier = Classifier()
-        self.wd = os.getcwd()
+        self.wd = os.path.dirname(__file__)
         self.cd = CoronaData()
 
     def init_tweepy_api(self):
