@@ -55,3 +55,7 @@ def df_to_dict(df):
     for index, row in df.iterrows():
         result[index] = dict(row)
     return result
+
+
+if __name__ == '__main__':
+    app.run()
