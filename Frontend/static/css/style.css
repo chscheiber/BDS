@@ -1,0 +1,17 @@
+.counties :hover {
+    fill: lightgreen;
+}
+
+.county-borders {
+    stroke: gray;
+    stroke-width: 0.2px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.states {
+    fill: none;
+    stroke: black;
+    stroke-width: 0.5px;
+    stroke-linejoin: round;
+}

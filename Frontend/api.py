@@ -1,14 +1,11 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, send_from_directory
 import pandas as pd
 
-from Data_Gathering.corona_data import CoronaData
-from Data_Gathering.twitter_data import get_corona_tweets
-from Processing.sentiment_analysis import Classifier
-from init import InitApplication
+from application import Application
 
 app = Flask(__name__)
-corona_data = CoronaData().read_data()
-corona_app = InitApplication()
+corona_app = Application()
+
 
 @app.route("/")
 def home():
@@ -16,16 +13,21 @@ def home():
 
 
 # Routes for infections/death
-@app.route('/corona_data', methods=["GET"])
-@app.route('/corona_data/', methods=["GET"])
-@app.route('/corona_data/<state>', methods=["GET"])
-def infections(state=None):
-    if state is None:
+@app.route('/corona', methods=["GET"])
+@app.route('/corona/', methods=["GET"])
+@app.route('/corona/<county>', methods=["GET"])
+def infections(county=None):
+    corona_data = corona_app.get_corona_data()
+    if county is None:
         response = df_to_dict(corona_data)
     else:
-        response = df_to_dict(corona_data[corona_data.state == state])
+        response = df_to_dict(corona_data[corona_data.county == county])
     return jsonify(response), 200
 
+
+@app.route('/Data/<path:path>')
+def send_file(path):
+    return send_from_directory('../Data', path)
 
 # Routes for Tweets
 @app.route('/corona_tweets', methods=["GET"])

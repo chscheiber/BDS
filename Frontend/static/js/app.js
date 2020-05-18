@@ -1,6 +1,3 @@
-//document.getElementById("chart-1").offsetWidth
-//document.getElementById("chart-1").clientWidth -> without borders width
-
 getCoronaData = async () => {
   coronaData = {};
   fetch("/infections", { headers: { "Content-Type": "application/json" } })
@@ -13,75 +10,59 @@ kpi1 = () => {
   document.getElementById("kpi-1").innerText = "Test";
 };
 
-drawMap = () => {
-  // https://bl.ocks.org/adamjanes/6cf85a4fd79e122695ebde7d41fe327f#unemployment.tsv
-  var chart = d3.select("#chart-1");
-  var width = document.getElementById("chart-1").clientWidth;
-  var height = document.getElementById("chart-1").clientHeight;
 
-  var svg = chart.append("svg").attr("width", width).attr("height", height);
+// Map based on: https://bl.ocks.org/adamjanes/6cf85a4fd79e122695ebde7d41fe327f
+drawMap = () => {
+  var svg = d3
+    .select("#chart-1")
+    .append("svg")
+    .attr("width", 960)
+    .attr("height", 600);
+  
+  var cases = d3.map();
+  var county_map = d3.map();
+  var state_map = d3.map();
 
   var path = d3.geoPath();
 
-  var x = d3.scaleLinear().domain([1, 10]).rangeRound([height, width]);
-
   var color = d3
-    .scaleThreshold()
-    .domain(d3.range(2, 10))
-    .range(d3.schemeBlues[9]);
-
-  var g = svg
-    .append("g")
-    .attr("class", "key")
-    .attr("transform", "translate(0,40)");
-
-  g.selectAll("rect")
-    .data(
-      color.range().map(function (d) {
-        d = color.invertExtent(d);
-        if (d[0] == null) d[0] = x.domain()[0];
-        if (d[1] == null) d[1] = x.domain()[1];
-        return d;
-      })
-    )
-    .enter()
-    .append("rect")
-    .attr("height", 8)
-    .attr("x", function (d) {
-      return x(d[0]);
-    })
-    .attr("width", function (d) {
-      return x(d[1]) - x(d[0]);
-    })
-
-  g.call(
-    d3
-      .axisBottom(x)
-      .tickSize(13)
-      .tickFormat(function (x, i) {
-        return i ? x : x + "%";
-      })
-      .tickValues(color.domain())
-  )
-    .select(".domain")
-    .remove();
+    .scaleSequential(d3.interpolateBlues) 
 
   var promises = [
     d3.json("https://d3js.org/us-10m.v1.json"),
+    d3.csv(
+      "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv",
+      function (d) {
+        cases.set(d.fips, +d.cases);
+        county_map.set(d.fips, d.county)
+        state_map.set(d.fips, d.state)
+      }
+    ),
   ];
 
   Promise.all(promises).then(ready);
-
   function ready([us]) {
+     var colorScale = d3
+       .scaleLog()
+       .domain([1, d3.max(cases.values())])
+       .range([0, 1]);
     svg
       .append("g")
-      .attr("class", "counties")
+      .attr("class", "counties county-borders")
       .selectAll("path")
       .data(topojson.feature(us, us.objects.counties).features)
       .enter()
       .append("path")
-      .attr("d", path);
-
+      .attr("fill", function (d) {
+        return color(colorScale(cases.get(d.id) | 1));
+      })
+      .attr("d", path)
+      .append("title")
+      .text(function (d) {
+        return ("County:\t" + county_map.get(d.id) +
+          "\nState:\t" + state_map.get(d.id) +
+          "\nCases:\t" + (cases.get(d.id) | 0));
+      });
     svg
       .append("path")
       .datum(
@@ -92,6 +73,7 @@ drawMap = () => {
       .attr("class", "states")
       .attr("d", path);
   }
+
 };
 
-drawMap()
+drawMap();

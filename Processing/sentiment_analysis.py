@@ -9,8 +9,6 @@ from zipfile import ZipFile
 import os.path
 import pandas as pd
 
-from Data_Gathering.twitter_data import get_corona_tweets
-
 
 class Classifier:
     def __init__(self):
