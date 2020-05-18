@@ -20,21 +20,25 @@
     margin-top: 5px;
 }
 
+.second-row {
+    height: 70vh;
+    margin-top: 20px;
+}
+
+#chart-1 {
+    height: 100%
+}
+
+#chart-2 {
+    display: flex;
+}
+
 .card-header {
     text-align: center;
 }
 
 .card-body {
     text-align: center;
-}
-
-.second-row {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-#chart-2 {
-    display: flex;
 }
 
 .nav {
