@@ -3,7 +3,7 @@ import tweepy
 import os
 
 from Data_Gathering.corona_data import CoronaData
-from Data_Gathering.twitter_data import get_corona_tweets
+from Data_Gathering.twitter_data import TwitterData
 from Processing.sentiment_analysis import Classifier
 from env import consumer_key, consumer_secret, access_token, access_token_secret
 
@@ -17,21 +17,24 @@ class Application:
         self.start_date = "2020-02-01"
         self.end_date = self.cd.end_date
         self.counties = self.__read_counties()
+        self.td = TwitterData(self.api, self.wd)
 
     def init_tweepy_api(self):
         # Consumer keys and access tokens, used for OAuth
-
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, access_token_secret)
 
         # Calling the api
         return tweepy.API(auth)
 
-    def create_tweet_data(self):
-        all_tweets = get_corona_tweets(base_dir=self.wd)
+    def download_tweets(self):
+        self.td.create_tweet_files()
+
+    def get_tweets_with_sentiment(self):
+        tweets = self.td.corona_tweets
         clf = Classifier()
-        all_tweets['sentiment'] = pd.Series(clf.get_sentiment(all_tweets['cleaned_text']), index=all_tweets.index)
-        return all_tweets
+        tweets = clf.get_classified_df(tweets)
+        return tweets
 
     def get_corona_data(self):
         corona_data = self.cd.data
@@ -53,3 +56,7 @@ application = Application()
 print(application.get_corona_data_per_date("2020-02-15"))
 print(application.get_counties())
 """
+
+application = Application()
+#application.download_tweets()
+print(application.get_tweets_with_sentiment().head(50))

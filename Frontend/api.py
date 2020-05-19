@@ -48,8 +48,7 @@ def send_file(path):
 # Routes for Tweets
 @app.route('/corona_tweets', methods=["GET"])
 def corona_tweets():
-    all_tweets = corona_app.create_tweet_data()
-    # Convert Dataframe to jsonifyable dict
+    all_tweets = corona_app.get_tweets_with_sentiment()
     return jsonify(df_to_dict(all_tweets)), 200
 
 
