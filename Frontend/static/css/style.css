@@ -16,8 +16,14 @@
     stroke-linejoin: round;
 }
 
+#dateSetter {
+    margin-right: 10px;
+    width: 40%
+}
+
 .top-row {
     margin-top: 5px;
+    height: 20vh;
 }
 
 .second-row {

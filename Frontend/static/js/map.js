@@ -1,14 +1,3 @@
-getCoronaData = async () => {
-  coronaData = {};
-  fetch("/infections", { headers: { "Content-Type": "application/json" } })
-    .then((data) => data.json())
-    .then((data) => (coronaData = data));
-};
-
-kpi1 = () => {
-  document.getElementById("kpi-1").innerText = "Test";
-};
-
 let svg = d3
   .select("#chart-1")
   .append("svg")
@@ -16,7 +5,6 @@ let svg = d3
   .attr("viewBox", "0 0 960 620")
   .attr("height", "100%");
 
-let cases = d3.map();
 let county_map = d3.map();
 let state_map = d3.map();
 
@@ -31,6 +19,7 @@ drawMap = (date) => {
     d3.json(`/corona_date/${date}`),
     d3.json("/counties"),
   ];
+  let cases = d3.map();
 
   Promise.all(promises).then(ready);
 
@@ -48,7 +37,7 @@ drawMap = (date) => {
       county_map.set(curr_fips, counties[key].county_name);
       state_map.set(curr_fips, counties[key].state_name);
     }
-
+    document.getElementById("map-load").remove();
     var colorScale = d3
       .scaleLog()
       .domain([1, d3.max(cases.values())])
@@ -84,11 +73,13 @@ drawMap = (date) => {
       )
       .attr("class", "states")
       .attr("d", path);
+    isLoading = false;
   }
 };
 
 updateMap = (date) => {
   let svg = d3.select("#map-svg");
+  let cases = d3.map();
 
   var promises = [d3.json(`/corona_date/${date}`)];
 
@@ -125,26 +116,6 @@ updateMap = (date) => {
   }
 };
 
-function run() {
-  init = true;
-  date = new Date(2020, 0, 30);
-  latestDate = new Date(2020, 4, 16);
-  drawMap(getDateString(date));
-  var interval = setInterval(update_interval, 1000);
-  function update_interval() {
-    if (date >= latestDate) {
-      clearInterval(interval);
-    } else if (init) {
-      drawMap(getDateString(date));
-      date.setDate(date.getDate() + 1);
-      init = false;
-    } else {
-      updateMap(getDateString(date));
-      date.setDate(date.getDate() + 1);
-    }
-  }
-}
-
 getDateString = (date) => {
   year = date.getFullYear();
   month = date.getMonth() + 1;
@@ -154,4 +125,9 @@ getDateString = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-run();
+startDate = new Date(2020, 1, 1);
+latestDate = new Date(2020, 4, 15);
+date = new Date(startDate);
+var isLoading = true;
+drawMap(getDateString(date));
+document.getElementById("kpi-1-text").innerText = getDateString(date);
