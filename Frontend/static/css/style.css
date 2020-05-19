@@ -31,11 +31,11 @@
     margin-top: 20px;
 }
 
-#chart-1 {
+#corona-dev-chart {
     height: 100%
 }
 
-#chart-2 {
+#kpi-boxes {
     display: flex;
 }
 
@@ -53,4 +53,14 @@
 
 .btn {
     margin-right: 10px;
+}
+
+.line {
+    stroke: green;
+    stroke-width: 1px;
+    fill: none;
+}
+
+.dot {
+    fill: green;
 }

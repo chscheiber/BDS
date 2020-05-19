@@ -6,13 +6,14 @@ startVisualization = () => {
   isRunning = true;
   console.log("Run");
   interval = setInterval(update_interval, 1000);
+
   function update_interval() {
     if (date >= latestDate) {
       clearInterval(interval);
       isRunning = false;
     } else {
-      updateMap(getDateString(date));
       date.setDate(date.getDate() + 1);
+      updateViz(getDateString(date));
     }
   }
 };
@@ -28,7 +29,7 @@ resetVisualization = (resetDate = new Date(startDate)) => {
   if (isLoading) return;
   console.log("Reset");
   clearInterval(interval);
-  updateMap(getDateString(resetDate));
+  updateViz(getDateString(resetDate));
   date = new Date(resetDate);
   isRunning = false;
 };
@@ -44,7 +45,7 @@ function handleForm(event) {
   }- ${latestDate.getDate()}`;
 
   tmpDate = stringToDate(tmpDate);
-  if (tmpDate == undefined || !(tmpDate >= startDate && tmpDate < today)) {
+  if (tmpDate == undefined || !(tmpDate >= startDate && tmpDate < new Date())) {
     alert(error_msg);
     return;
   }

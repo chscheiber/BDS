@@ -35,23 +35,19 @@
 
   <div class="container-fluid">
     <div class="row top-row">
-      <div class="col-lg-12" style="border: 0.5px solid lightgrey;">
-        Insert Sentiment progress over time here...
-      </div>
+      <div class="col-lg-12" id="sentiment-timeline"></div>
     </div>
     <div class="row second-row">
-      <div class="col-lg-7" id="chart-1">
+      <div class="col-lg-7" id="map">
         <h6 id="map-load">Loading...</h6>
       </div>
-      <div class="col-lg-3" style="border: 0.5px solid lightgrey;">
-        Insert chart with corona infections/deaths over time...
-      </div>
-      <div class="col-lg-2" id="chart-2">
+      <div class="col-lg-3" id="corona-dev-chart"></div>
+      <div class="col-lg-2" id="kpi-boxes">
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <h5 id="kpi-1-text"></h5>
+                <h5 id="kpi-date-text">-</h5>
               </div>
               <div class="card-header">
                 Date
@@ -61,7 +57,7 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <h5 id="kpi-2-text">110000</h5>
+                <h5 id="kpi-cases-text">-</h5>
               </div>
               <div class="card-header">
                 Cases
@@ -71,7 +67,7 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <h5 id="kpi-3-text">1000</h5>
+                <h5 id="kpi-deaths-text">-</h5>
               </div>
               <div class="card-header">
                 Deaths
@@ -81,7 +77,7 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <h5 id="kpi-4-text">+ 0.5867</h5>
+                <h5 id="kpi-sentiment-text">-</h5>
               </div>
               <div class="card-header">
                 Sentiment
@@ -98,8 +94,11 @@
   <script src="https://d3js.org/d3-scale.v3.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   <script src="https://d3js.org/topojson.v2.min.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename = 'js/helperFunctions.js')}}"></script>
   <script type="text/javascript" src="{{url_for('static', filename = 'js/map.js')}}"></script>
   <script type="text/javascript" src="{{url_for('static', filename = 'js/button_handlers.js')}}"></script>
+  <script type="text/javascript" src="{{url_for('static', filename = 'js/charts.js')}}"></script>
+  <script type="text/javascript" src="{{url_for('static', filename = 'js/app.js')}}"></script>
   <!--<script type="text/javascript" src="../static/js/app.js"></script>-->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">

@@ -1,3 +1,5 @@
+import random
+
 from flask import Flask, render_template, jsonify, send_from_directory
 import pandas as pd
 
@@ -27,6 +29,7 @@ def infections(county=None):
 
 @app.route('/corona_date/<date>')
 def corona_per_date(date="2020-05-15"):
+    #TODO Change to list
     corona_data = corona_app.get_corona_data_per_date(date)
     return jsonify(df_to_dict(corona_data)), 200
 
@@ -59,6 +62,36 @@ def start_date():
 @app.route('/end_date')
 def end_date():
     return jsonify(date=corona_app.end_date), 200
+
+
+sentiment_list = []
+@app.route('/kpis/<date>')
+def kpis(date=corona_app.start_date):
+    sentiment_list.append(random.random())
+    return jsonify(cases=(int(date[0:4])+int(date[8:10])),
+                   deaths=date[8:10],
+                   sentiment=sentiment_list
+                   ), 200
+
+
+@app.route('/cases_until/<date>')
+def cases_until(date=corona_app.start_date):
+    return jsonify(cases=(int(date[0:4])+int(date[8:10]))), 200
+
+
+@app.route('/deaths_until/<date>')
+def deaths_until(date=corona_app.start_date):
+    return jsonify(deaths=date[8:10]), 200
+
+
+@app.route('/sentiment/<date>')
+def sentiment(date=corona_app.start_date):
+    return jsonify(sentiment=random.random()), 200
+
+
+@app.route('/test_list')
+def test_list():
+    return jsonify(data_list=[1, 2, 3, 4, 5])
 
 
 def df_to_dict(df):

@@ -1,5 +1,5 @@
 let svg = d3
-  .select("#chart-1")
+  .select("#map")
   .append("svg")
   .attr("id", "map-svg")
   .attr("viewBox", "0 0 960 620")
@@ -56,7 +56,9 @@ drawMap = (date) => {
       .append("title")
       .text(function (d) {
         return (
-          "County:\t" +
+          "Date:\t" +
+          date +
+          "\nCounty:\t" +
           county_map.get(d.id) +
           "\nState:\t" +
           state_map.get(d.id) +
@@ -77,15 +79,10 @@ drawMap = (date) => {
   }
 };
 
-updateMap = (date) => {
-  let svg = d3.select("#map-svg");
-  let cases = d3.map();
+updateMap = async (date, d) => {
+    let svg = d3.select("#map-svg");
+    let cases = d3.map();
 
-  var promises = [d3.json(`/corona_date/${date}`)];
-
-  Promise.all(promises).then(ready);
-
-  function ready([d]) {
     for (var key in d) {
       curr_fips = +d[key].fips >= 10000 ? d[key].fips : "0" + d[key].fips;
       cases.set(curr_fips, +d[key].cases);
@@ -112,41 +109,4 @@ updateMap = (date) => {
         (cases.get(d.id) | 0)
       );
     });
-    document.getElementById("kpi-1-text").innerText = date;
-  }
 };
-
-getDateString = (date) => {
-  year = date.getFullYear();
-  month = date.getMonth() + 1;
-  month = month >= 10 ? month : "0" + month;
-  day = date.getDate();
-  day = day >= 10 ? day : "0" + day;
-  return `${year}-${month}-${day}`;
-};
-
-stringToDate = (dateString) => {
-  var re = /(\d{4})-(\d{2})-(\d{2})/;
-  if (dateString.match(re) == null || dateString.length != 10) return undefined;
-
-  var match = re.exec(dateString);
-  tmp_year = match[1];
-  tmp_month = match[2];
-  tmp_day = match[3];
-  return new Date(tmp_year, tmp_month - 1, tmp_day);
-};
-
-startDate = new Date(2020, 1, 1);
-latestDate = new Date();
-datePromises = [d3.json("/start_date"), d3.json("/end_date")];
-console.log(datePromises);
-Promise.all(datePromises).then(([sDate, eDate]) => {
-  console.log(sDate, eDate);
-  startDate = stringToDate(sDate.date);
-  latestDate = stringToDate(eDate.date);
-});
-
-date = new Date(startDate);
-var isLoading = true;
-drawMap(getDateString(date));
-document.getElementById("kpi-1-text").innerText = getDateString(date);
