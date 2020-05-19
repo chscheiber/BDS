@@ -125,8 +125,27 @@ getDateString = (date) => {
   return `${year}-${month}-${day}`;
 };
 
+stringToDate = (dateString) => {
+  var re = /(\d{4})-(\d{2})-(\d{2})/;
+  if (dateString.match(re) == null || dateString.length != 10) return undefined;
+
+  var match = re.exec(dateString);
+  tmp_year = match[1];
+  tmp_month = match[2];
+  tmp_day = match[3];
+  return new Date(tmp_year, tmp_month - 1, tmp_day);
+};
+
 startDate = new Date(2020, 1, 1);
-latestDate = new Date(2020, 4, 15);
+latestDate = new Date();
+datePromises = [d3.json("/start_date"), d3.json("/end_date")];
+console.log(datePromises);
+Promise.all(datePromises).then(([sDate, eDate]) => {
+  console.log(sDate, eDate);
+  startDate = stringToDate(sDate.date);
+  latestDate = stringToDate(eDate.date);
+});
+
 date = new Date(startDate);
 var isLoading = true;
 drawMap(getDateString(date));

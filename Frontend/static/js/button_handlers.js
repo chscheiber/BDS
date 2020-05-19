@@ -39,24 +39,12 @@ function handleForm(event) {
   event.preventDefault();
   tmpDate = document.getElementById("dateSetter").value;
 
-  var today = new Date();
-  today.setDate(today.getDate() - 1);
-  error_msg = `Please enter a date between 2020-02-01 and ${today.getFullYear()}-${
-    today.getMonth() + 1
-  }- ${today.getDate()}`;
+  error_msg = `Please enter a date between 2020-02-01 and ${latestDate.getFullYear()}-${
+    latestDate.getMonth() + 1
+  }- ${latestDate.getDate()}`;
 
-  var re = /(\d{4})-(\d{2})-(\d{2})/;
-  if (tmpDate.match(re) == null || tmpDate.length != 10) {
-    alert(error_msg);
-    return;
-  }
-
-  var match = re.exec(tmpDate);
-  tmp_year = match[1];
-  tmp_month = match[2];
-  tmp_day = match[3];
-  tmpDate = new Date(tmp_year, tmp_month - 1, tmp_day);
-  if (!(tmpDate >= startDate && tmpDate < today)) {
+  tmpDate = stringToDate(tmpDate);
+  if (tmpDate == undefined || !(tmpDate >= startDate && tmpDate < today)) {
     alert(error_msg);
     return;
   }

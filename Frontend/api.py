@@ -33,7 +33,7 @@ def corona_per_date(date="2020-05-15"):
 
 @app.route('/counties')
 def counties():
-    all_counties = corona_app.get_counties()
+    all_counties = corona_app.counties
     return jsonify(df_to_dict(all_counties))
 
 
@@ -48,6 +48,17 @@ def corona_tweets():
     all_tweets = corona_app.create_tweet_data()
     # Convert Dataframe to jsonifyable dict
     return jsonify(df_to_dict(all_tweets)), 200
+
+
+# Routes for JS Scripts
+@app.route('/start_date')
+def start_date():
+    return jsonify(date=corona_app.start_date), 200
+
+
+@app.route('/end_date')
+def end_date():
+    return jsonify(date=corona_app.end_date), 200
 
 
 def df_to_dict(df):

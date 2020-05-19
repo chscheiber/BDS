@@ -13,7 +13,10 @@ class Application:
         self.api = self.init_tweepy_api()
         self.classifier = Classifier()
         self.wd = os.path.dirname(__file__)
-        self.cd = CoronaData()
+        self.cd = CoronaData(self.wd)
+        self.start_date = "2020-02-01"
+        self.end_date = self.cd.end_date
+        self.counties = self.__read_counties()
 
     def init_tweepy_api(self):
         # Consumer keys and access tokens, used for OAuth
@@ -31,18 +34,19 @@ class Application:
         return all_tweets
 
     def get_corona_data(self):
-        corona_data = self.cd.read_data(self.wd)
+        corona_data = self.cd.data
         return corona_data
 
     def get_corona_data_per_date(self, date):
-        corona_data = self.cd.read_data(self.wd)
+        corona_data = self.cd.data
         corona_data = corona_data[corona_data.date == date]
         return corona_data
 
-    def get_counties(self):
+    def __read_counties(self):
         file_path = f"{self.wd}/Data/fips_counties.csv"
         df = pd.read_csv(file_path)
         return df
+
 
 """
 application = Application()
