@@ -7,7 +7,7 @@ The goal of our BDS Project is to answer the following research question:
 ## CEO Perspective
 To provide a high level overview about the research question we decided to generate a D3js Dashboard
 to visualize the spread of the corona virus in the United States over time in comparison
-to Donald Trumps opinion on the corona virus. The opinion of Donald Trump is calculated using a
+to Donald Trump's opinion on the corona virus. The opinion of Donald Trump is calculated using a
 sentiment analysis on a subset of his tweets. This subset contains all tweets issued by him which
 contain at least one predefined term related to the Covid-19 pandemic.
 
