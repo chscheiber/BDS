@@ -22,8 +22,15 @@ and a JavaScript Frontend. The Visualizations were created with D3js, the stylin
 
 ## Running the demo
 1. Install requirements using: pip install -r requirements.txt
-2. Run app.py to start a Flask Server
-3. Open localhost:5000 in Browser
+2. Add an .env file in the same folder as app.py 
+3. Run app.py to start a Flask Server
+4. Open localhost:5000 in Browser
+---
+.env:<br>
+consumer_key = <consumer_key><br>
+consumer_secret = <consumer_secret><br>
+access_token = <access_token><br>
+access_token_secret = <access_token_secret><br>
 
 ## API
 Our API offers the following routes:

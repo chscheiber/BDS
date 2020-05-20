@@ -3,7 +3,7 @@ let svg = d3
   .append("svg")
   .attr("id", "map-svg")
   .attr("viewBox", "0 0 960 620")
-  .attr("height", "100%");
+  .attr("height", "100%")
 
 let county_map = d3.map();
 let state_map = d3.map();
