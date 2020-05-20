@@ -57,6 +57,12 @@ class Application:
         corona_data = corona_data[corona_data.date == date]
         return corona_data
 
+    def get_aggregated_corona_data(self, date):
+        corona_data = self.get_corona_data_per_date(date)
+        cases = corona_data["cases"].sum()
+        deaths = corona_data["deaths"].sum()
+        return {"cases": cases, "deaths": deaths}
+
     def __read_counties(self):
         file_path = f"{self.wd}/Data/fips_counties.csv"
         df = pd.read_csv(file_path)
@@ -84,3 +90,5 @@ print({
     "polarity": tweet_polarity
 })
 """
+application = Application()
+application.get_aggregated_corona_data("2020-05-14")

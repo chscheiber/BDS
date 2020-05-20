@@ -51,7 +51,7 @@ drawMap = (date) => {
       .enter()
       .append("path")
       .attr("fill", function (d) {
-        return color(colorScale(cases.get(d.id) | 1));
+        return color(colorScale((cases.get(d.id) + 1) | 1));
       })
       .attr("d", path)
       .append("title")
@@ -95,7 +95,7 @@ updateMap = async (date, d) => {
     .range([0, 1]);
 
   svg.selectAll("path").attr("fill", function (d) {
-    return color(colorScale(cases.get(d.id) | 1));
+    return color(colorScale((cases.get(d.id) + 1) | 1));
   });
 
   svg.selectAll("title").text(function (d) {
