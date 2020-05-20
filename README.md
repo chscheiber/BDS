@@ -7,7 +7,7 @@ The goal of our BDS Project is to answer the following research question:
 ## CEO Perspective
 To provide a high level overview about the research question we decided to generate a D3js Dashboard
 to visualize the spread of the corona virus in the United States over time in comparison
-to Donald Trumps opinion on the corona virus. The opinion of Donald Trump is calculated using a
+to Donald Trump's opinion on the corona virus. The opinion of Donald Trump is calculated using a
 sentiment analysis on a subset of his tweets. This subset contains all tweets issued by him which
 contain at least one predefined term related to the Covid-19 pandemic.
 
@@ -28,11 +28,44 @@ and a JavaScript Frontend. The Visualizations were created with D3js, the stylin
 ## API
 Our API offers the following routes:
 
-/corona
-- Returns all cases and deaths for all counties and all dates
+/corona/
+-Returns all cases and deaths for all counties and all dates
 
-/corona/\<date>
-- Returns all cases and deaths for all counties on the specified date
+/corona/<county>
+-Returns all cases and deaths for all dates in the specified county
+
+/corona_date/<date>
+-Returns all cases and deaths for all counties on the specified date
+
+/aggregated/<date>
+-Returns all cases and deaths for all counties aggregated on the specified
+
+/corona_tweets/<date>
+-Returns all tweets containing corona terms up to the specified date
+
+/all_tweets/<date>
+-Returns all tweets up to the specified date
+
+/cases_until/<date>
+-Returns amount of cases up to specified date
+
+/deaths_until/<date>
+-Returns amount of deaths up to specified date
+
+/start_date
+-Returns the start date for viz
+
+/end_date
+-Returns the end date for viz
+
+/kpis/<date>
+-Returns cases and deaths up to specified date
+
+/counties
+-Returns all US counties
+
+/Data/<path:path>
+-Returns static files in Data folder
 
 ## Status
 ![D3](/img/status_1805.png)
