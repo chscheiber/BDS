@@ -1,12 +1,13 @@
 import random
 from datetime import datetime
 from flask import Flask, render_template, jsonify, send_from_directory
-import pandas as pd
 
-from application import Application
+from data_interface import Application
 
-app = Flask(__name__)
 corona_app = Application()
+template_dir = f"{corona_app.wd}/Frontend/templates"
+static_dir = f"{corona_app.wd}/Frontend/static"
+app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 
 
 @app.route("/")

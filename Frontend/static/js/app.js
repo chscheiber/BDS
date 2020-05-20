@@ -13,9 +13,11 @@ updateViz = async (date) => {
     polarity = tweet.polarity;
     document.getElementById("kpi-cases-text").innerText = kpi.cases;
     document.getElementById("kpi-deaths-text").innerText = kpi.deaths;
-    document.getElementById("kpi-sentiment-text").innerText = +tweet.polarity[
-      tweet.polarity.length - 1
-    ].toFixed(4);
+    tmp_popularity =
+      tweet.polarity.length >= 1
+        ? +tweet.polarity[tweet.polarity.length - 1].toFixed(4)
+        : 0;
+    document.getElementById("kpi-sentiment-text").innerText = tmp_popularity;
     updateMap(date, d);
     updateSentimentChart();
   });

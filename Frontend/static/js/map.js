@@ -24,6 +24,7 @@ drawMap = (date) => {
   Promise.all(promises).then(ready);
 
   function ready([us, d, counties]) {
+    console.log(d);
     for (var key in d) {
       curr_fips = +d[key].fips >= 10000 ? d[key].fips : "0" + d[key].fips;
       cases.set(curr_fips, +d[key].cases);
@@ -80,33 +81,33 @@ drawMap = (date) => {
 };
 
 updateMap = async (date, d) => {
-    let svg = d3.select("#map-svg");
-    let cases = d3.map();
+  let svg = d3.select("#map-svg");
+  let cases = d3.map();
 
-    for (var key in d) {
-      curr_fips = +d[key].fips >= 10000 ? d[key].fips : "0" + d[key].fips;
-      cases.set(curr_fips, +d[key].cases);
-    }
+  for (var key in d) {
+    curr_fips = +d[key].fips >= 10000 ? d[key].fips : "0" + d[key].fips;
+    cases.set(curr_fips, +d[key].cases);
+  }
 
-    var colorScale = d3
-      .scaleLog()
-      .domain([1, d3.max(cases.values())])
-      .range([0, 1]);
+  var colorScale = d3
+    .scaleLog()
+    .domain([1, d3.max(cases.values())])
+    .range([0, 1]);
 
-    svg.selectAll("path").attr("fill", function (d) {
-      return color(colorScale(cases.get(d.id) | 1));
-    });
+  svg.selectAll("path").attr("fill", function (d) {
+    return color(colorScale(cases.get(d.id) | 1));
+  });
 
-    svg.selectAll("title").text(function (d) {
-      return (
-        "Date:\t" +
-        date +
-        "\nCounty:\t" +
-        county_map.get(d.id) +
-        "\nState:\t" +
-        state_map.get(d.id) +
-        "\nCases:\t" +
-        (cases.get(d.id) | 0)
-      );
-    });
+  svg.selectAll("title").text(function (d) {
+    return (
+      "Date:\t" +
+      date +
+      "\nCounty:\t" +
+      county_map.get(d.id) +
+      "\nState:\t" +
+      state_map.get(d.id) +
+      "\nCases:\t" +
+      (cases.get(d.id) | 0)
+    );
+  });
 };

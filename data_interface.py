@@ -63,6 +63,7 @@ class Application:
         return df
 
 
+
 """
 application = Application()
 print(application.get_corona_data_per_date("2020-02-15"))
