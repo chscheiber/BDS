@@ -1,5 +1,5 @@
 import random
-
+from datetime import datetime
 from flask import Flask, render_template, jsonify, send_from_directory
 import pandas as pd
 
@@ -51,10 +51,18 @@ def send_file(path):
 
 
 # Routes for Tweets
-@app.route('/corona_tweets', methods=["GET"])
-def corona_tweets():
-    all_tweets = corona_app.get_tweets_with_sentiment()
-    return jsonify(df_to_dict(all_tweets)), 200
+@app.route('/corona_tweets/<date>', methods=["GET"])
+def corona_tweets(date=corona_app.start_date):
+    all_tweets_reverse = corona_app.get_tweets_before(date)
+    all_tweets = all_tweets_reverse.iloc[::-1]
+    tweet_text = all_tweets["full_text"].to_list()
+    tweet_date = all_tweets["date"].apply(lambda d: datetime.strftime(d, '%Y-%m-%d')).to_list()
+    tweet_subjectivity = all_tweets["Subjectivity"].to_list()
+    tweet_polarity = all_tweets["Polarity"].to_list()
+    return jsonify(date=tweet_date,
+                   text=tweet_text,
+                   subjectivity=tweet_subjectivity,
+                   polarity=tweet_polarity), 200
 
 
 # Routes for JS Scripts
@@ -68,14 +76,10 @@ def end_date():
     return jsonify(date=corona_app.end_date), 200
 
 
-sentiment_list = []
 @app.route('/kpis/<date>')
 def kpis(date=corona_app.start_date):
-    sentiment_list.append(random.random())
     return jsonify(cases=(int(date[0:4])+int(date[8:10])),
-                   deaths=date[8:10],
-                   sentiment=sentiment_list
-                   ), 200
+                   deaths=date[8:10]), 200
 
 
 @app.route('/cases_until/<date>')

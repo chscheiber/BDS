@@ -1,6 +1,6 @@
 deaths = [];
 cases = [];
-sentiment = [];
+polarity = [];
 
 var margin = { top: 10, right: 30, bottom: 30, left: 60 },
   width =
@@ -45,13 +45,13 @@ sentimentSVG
 
 sentimentSVG.append("g").attr("class", "y axis").call(yAxis); // Create an axis component with d3.axisLeft
 
-sentimentSVG.append("path").attr("class", "line").attr("d", line(sentiment));
+sentimentSVG.append("path").attr("class", "line").attr("d", line(polarity));
 
 function updateSentimentChart() {
-  xScale.domain([0, sentiment.length]);
+  xScale.domain([0, polarity.length]);
   var svg = d3.select("#sentiment-timeline");
 
-  svg.select(".line").attr("d", line(sentiment));
+  svg.select(".line").attr("d", line(polarity));
 
   svg
     .select(".x.axis") // change the x axis

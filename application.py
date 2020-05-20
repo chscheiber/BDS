@@ -1,7 +1,7 @@
 import pandas as pd
 import tweepy
 import os
-
+from datetime import datetime
 from dotenv import load_dotenv
 
 from Data_Gathering.corona_data import CoronaData
@@ -20,6 +20,7 @@ class Application:
         self.end_date = self.cd.end_date
         self.counties = self.__read_counties()
         self.td = TwitterData(self.api, self.wd)
+        self.tweets = self.__get_tweets_with_sentiment()
 
     def init_tweepy_api(self):
         # Consumer keys and access tokens, used for OAuth
@@ -31,16 +32,21 @@ class Application:
         auth.set_access_token(access_token, access_token_secret)
 
         # Calling the api
-        return tweepy.API(auth)
+        return tweepy.API(auth, wait_on_rate_limit_notify=True, wait_on_rate_limit=True)
 
-    def download_tweets(self):
+    def __download_tweets(self):
         self.td.create_tweet_files()
 
-    def get_tweets_with_sentiment(self):
+    def __get_tweets_with_sentiment(self):
         tweets = self.td.corona_tweets
         clf = Classifier()
         tweets = clf.get_classified_df(tweets)
         return tweets
+
+    def get_tweets_before(self, date):
+        date = datetime.strptime(date, '%Y-%m-%d')
+        tweets_before_date = self.tweets[self.tweets["date"] <= date]
+        return tweets_before_date
 
     def get_all_corona_data(self):
         corona_data = self.cd.data
@@ -61,8 +67,19 @@ class Application:
 application = Application()
 print(application.get_corona_data_per_date("2020-02-15"))
 print(application.get_counties())
-"""
+
 
 application = Application()
-application.download_tweets()
-print(application.get_tweets_with_sentiment().head(50))
+all_tweets = application.get_tweets_before("2020-04-01")
+tweet_text = all_tweets["full_text"]
+tweet_date = all_tweets["date"].apply(lambda d: datetime.strftime(d, '%Y-%m-%d'))
+tweet_subjectivity = all_tweets["Subjectivity"]
+tweet_polarity = all_tweets["Polarity"]
+
+print({
+    "date": tweet_date,
+    "text": tweet_text,
+    "subjectivity": tweet_sentiment,
+    "polarity": tweet_polarity
+})
+"""

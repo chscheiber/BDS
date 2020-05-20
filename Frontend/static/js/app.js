@@ -1,17 +1,23 @@
 updateViz = async (date) => {
-  kpiPromises = [d3.json(`/corona_date/${date}`), d3.json(`/kpis/${date}`)];
+  kpiPromises = [
+    d3.json(`/corona_date/${date}`),
+    d3.json(`/kpis/${date}`),
+    d3.json(`/corona_tweets/${date}`),
+  ];
 
-  Promise.all(kpiPromises).then(([d, kpi]) => {
-    updateMap(date, d);
-    updateSentimentChart();
+  Promise.all(kpiPromises).then(([d, kpi, tweet]) => {
     document.getElementById("kpi-date-text").innerText = date;
     cases.push(+kpi.cases);
     deaths.push(+kpi.deaths);
-    sentiment = kpi.sentiment;
+    console.log(tweet);
+    polarity = tweet.polarity;
     document.getElementById("kpi-cases-text").innerText = kpi.cases;
     document.getElementById("kpi-deaths-text").innerText = kpi.deaths;
-    document.getElementById("kpi-sentiment-text").innerText =
-      kpi.sentiment[kpi.sentiment.length - 1];
+    document.getElementById("kpi-sentiment-text").innerText = +tweet.polarity[
+      tweet.polarity.length - 1
+    ].toFixed(4);
+    updateMap(date, d);
+    updateSentimentChart();
   });
 };
 

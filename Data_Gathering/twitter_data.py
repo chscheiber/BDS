@@ -1,4 +1,7 @@
+from datetime import datetime
 import os
+from time import sleep
+
 from logzero import logger
 from Data.punct import Punct
 from Data.twitter_handles import handles, corona_terms
@@ -13,12 +16,13 @@ class TwitterData:
         self.wd = wd
         self.handle = handle
         self.all_tweets = self.__read_all_tweets()
+        self.all_tweets["date"] = self.all_tweets["created_at"].apply(lambda d: datetime.strptime(d, '%Y-%m-%d %H:%M:%S'))
         self.corona_tweets = self.__read_corona_tweets()
+        self.corona_tweets["date"] = self.corona_tweets["created_at"].apply(
+            lambda d: datetime.strptime(d, '%Y-%m-%d %H:%M:%S'))
 
     def create_tweet_files(self):
         all_tweets = []
-        print(self.api)
-        print(self.handle)
         new_tweets = self.api.user_timeline(screen_name=self.handle, count=200, exclude_replies=True, include_rts=False,
                                             tweet_mode="extended")
         if len(new_tweets) == 0:
@@ -29,6 +33,8 @@ class TwitterData:
         oldest = all_tweets[-1].id - 1
 
         while len(new_tweets) > 0:
+            # Trying to avoid bumping into rate limit
+            sleep(2)
             new_tweets = self.api.user_timeline(screen_name=self.handle, count=200, max_id=oldest,
                                                 exclude_replies=True, include_rts=False, tweet_mode="extended")
             all_tweets.extend(new_tweets)
