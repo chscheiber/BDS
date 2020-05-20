@@ -29,11 +29,10 @@ and a JavaScript Frontend. The Visualizations were created with D3js, the stylin
 Our API offers the following routes:
 
 /corona
-/corona/
 - Returns all cases and deaths for all counties and all dates
 
 /corona/<date>
--Returns all cases and deaths for all counties on the specified date
+- Returns all cases and deaths for all counties on the specified date
 
 ## Status
 ![D3](/img/status_1805.png)
