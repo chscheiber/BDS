@@ -123,13 +123,6 @@ def end_date():
     return jsonify(date=corona_app.end_date), 200
 
 
-# Get cases and deaths up to specified date
-@app.route('/kpis/<date>')
-def kpis(date=corona_app.start_date):
-    return jsonify(cases=(int(date[0:4]) + int(date[8:10])),
-                   deaths=date[8:10]), 200
-
-
 # Get only cases up to specified date
 @app.route('/cases_until/<date>')
 def cases_until(date=corona_app.start_date):
@@ -189,11 +182,13 @@ def df_to_dict(df):
 
 
 def __transform_tweets(tweets):
+    # Reverse Dataframe
     tweets = tweets.iloc[::-1]
+    tweets["date"] = tweets["date"].apply(lambda d: datetime.strftime(d, '%Y-%m-%d'))
+    tweet_polarity = tweets.groupby(["date"])["Polarity"].mean().to_list()
+    tweet_subjectivity = tweets.groupby(["date"])["Subjectivity"].mean().to_list()
     tweet_text = tweets["full_text"].to_list()
-    tweet_date = tweets["date"].apply(lambda d: datetime.strftime(d, '%Y-%m-%d')).to_list()
-    tweet_subjectivity = tweets["Subjectivity"].to_list()
-    tweet_polarity = tweets["Polarity"].to_list()
+    tweet_date = tweets["date"].to_list()
     return jsonify(date=tweet_date,
                    text=tweet_text,
                    subjectivity=tweet_subjectivity,

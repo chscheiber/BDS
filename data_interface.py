@@ -41,7 +41,7 @@ class Application:
         access_token_secret = os.getenv("access_token_secret")
         auth.set_access_token(access_token, access_token_secret)
         # Calling the api
-        return tweepy.API(auth, wait_on_rate_limit_notify=True, wait_on_rate_limit=True)
+        return tweepy.API(auth)
 
     # Takes df as input and adds polarity and subjectivity columns
     def __get_tweets_with_sentiment(self, tweets):

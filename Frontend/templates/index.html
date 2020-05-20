@@ -36,15 +36,24 @@
   <div class="container-fluid">
     <div class="row top-row">
       <div class="col-lg-12" id="sentiment-timeline">
-        <h6>Sentiment development of Donald Trump's tweets which contain corona related Terms</h6>
+        <div style="display: flex; align-items: center;">
+          <h6>Sentiment development of Donald Trump's tweets</h6>
+          <div style="flex-grow: 1;"></div>
+          <div style="height: 10px; width: 10px; background-color: green; margin-right: 5px; margin-bottom: 5px;">
+          </div>
+          <h6>Sentiment of corona related tweets</h6>
+          <div
+            style="height: 10px; width: 10px; background-color: red; margin-right: 5px;margin-bottom: 5px; margin-left: 20px;">
+          </div>
+          <h6>Sentiment of all tweets</h6>
+        </div>
       </div>
     </div>
     <div class="row second-row">
-      <div class="col-lg-7" id="map">
+      <div class="col-lg-8" id="map">
         <h6 id="map-load">Loading...</h6>
       </div>
-      <div class="col-lg-3" id="corona-dev-chart"></div>
-      <div class="col-lg-2" id="kpi-boxes">
+      <div class="col-lg-4" id="kpi-boxes">
         <div class="row">
           <div class="col-lg-12">
             <div class="card">

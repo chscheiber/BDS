@@ -55,9 +55,15 @@
     margin-right: 10px;
 }
 
-.line {
+.corona-tweets {
     stroke: green;
-    stroke-width: 1px;
+    stroke-width: 1.5px;
+    fill: none;
+}
+
+.all-tweets {
+    stroke: red;
+    stroke-width: 1.5px;
     fill: none;
 }
 

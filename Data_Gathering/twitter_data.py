@@ -19,7 +19,8 @@ class TwitterData:
         self.path = f'{self.wd}/Data/Tweets/{self.file_name}'
 
         # Check if new tweets are available
-        self.all_tweets = self.update_tweets()
+        self.update_tweets()
+        self.all_tweets = self.__read_all_tweets()
         self.all_tweets["date"] = self.all_tweets["created_at"].apply(lambda d: datetime.strptime(d, '%Y-%m-%d %H:%M:%S'))
 
         # Import all tweets related to the corona virus
@@ -58,7 +59,7 @@ class TwitterData:
         out_tweets = [[tweet.id_str, tweet.created_at, tweet.full_text.encode("utf-8")] for tweet in all_tweets]
         df_out_tweets = pd.DataFrame(out_tweets, columns=["id", "created_at", "full_text"])
         df = pd.concat([df_out_tweets, df])
-        df.to_csv(self.path)
+        df.to_csv(self.path, index=False)
         return df
 
     # Download latest ~2000 Tweets from Donald Trump and store them in the data folder
@@ -75,7 +76,7 @@ class TwitterData:
         logger.info(f"Downloading latest Tweets from {self.handle}")
         while len(new_tweets) > 0:
             # Trying to avoid bumping into rate limit
-            sleep(5)
+            sleep(2)
             new_tweets = self.api.user_timeline(screen_name=self.handle, count=200, max_id=oldest,
                                                 exclude_replies=True, include_rts=False, tweet_mode="extended")
             all_tweets.extend(new_tweets)
@@ -84,7 +85,7 @@ class TwitterData:
 
         out_tweets = [[tweet.id_str, tweet.created_at, tweet.full_text.encode("utf-8")] for tweet in all_tweets]
         df = pd.DataFrame(out_tweets, columns=["id", "created_at", "full_text"])
-        df.to_csv(self.path)
+        df.to_csv(self.path, index=False)
         logger.info("Tweets downloaded!")
         return df
 
@@ -108,6 +109,7 @@ class TwitterData:
         if not os.path.isfile(file_path):
             self.download_tweets()
         df = pd.read_csv(file_path)
+        df['cleaned_text'] = df.apply(lambda row: self.__clean_text(row['full_text']), axis=1)
         return df
 
     # Read corona tweets stored in the data folder and return it as pd.DataFrame
@@ -119,5 +121,4 @@ class TwitterData:
         pattern = '|'.join(corona_terms)
         df['cleaned_text'] = df.apply(lambda row: self.__clean_text(row['full_text']), axis=1)
         df = df[df.cleaned_text.str.contains(pattern)]
-        df.to_csv(file_path)
         return df
