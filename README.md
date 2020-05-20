@@ -31,7 +31,7 @@ Our API offers the following routes:
 /corona
 - Returns all cases and deaths for all counties and all dates
 
-/corona/<date>
+/corona/\<date>
 - Returns all cases and deaths for all counties on the specified date
 
 ## Status
