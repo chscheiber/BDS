@@ -22,12 +22,8 @@ and a JavaScript Frontend. The Visualizations were created with D3js, the stylin
 
 ## Running the demo
 1. Install requirements using: pip install -r requirements.txt
-2. Run 
+2. Run app.py to start a Flask Server
+3. Open localhost:5000 in Browser
 
 ## Status
 ![D3](/img/status_1805.png)
-
-
-### Requirements.txt
-requirements.txt is genereated with:
-conda list -e > requirements.txt
