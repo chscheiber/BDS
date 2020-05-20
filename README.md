@@ -25,5 +25,15 @@ and a JavaScript Frontend. The Visualizations were created with D3js, the stylin
 2. Run app.py to start a Flask Server
 3. Open localhost:5000 in Browser
 
+## API
+Our API offers the following routes:
+
+/corona
+/corona/
+- Returns all cases and deaths for all counties and all dates
+
+/corona/<date>
+-Returns all cases and deaths for all counties on the specified date
+
 ## Status
 ![D3](/img/status_1805.png)
