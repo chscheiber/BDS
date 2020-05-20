@@ -57,6 +57,7 @@ def corona_per_date(date=corona_app.end_date):
     return jsonify(df_to_dict(corona_data)), 200
 
 
+# Aggregates and returns all cases and deaths for the specified date
 @app.route('/aggregated/<date>')
 def aggregated(date=corona_app.end_date):
     data = corona_app.get_aggregated_corona_data(date)
