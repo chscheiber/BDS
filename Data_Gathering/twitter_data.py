@@ -17,6 +17,8 @@ class TwitterData:
 
     def create_tweet_files(self):
         all_tweets = []
+        print(self.api)
+        print(self.handle)
         new_tweets = self.api.user_timeline(screen_name=self.handle, count=200, exclude_replies=True, include_rts=False,
                                             tweet_mode="extended")
         if len(new_tweets) == 0:

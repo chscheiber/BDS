@@ -2,14 +2,16 @@ import pandas as pd
 import tweepy
 import os
 
+from dotenv import load_dotenv
+
 from Data_Gathering.corona_data import CoronaData
 from Data_Gathering.twitter_data import TwitterData
 from Processing.sentiment_analysis import Classifier
-from env import consumer_key, consumer_secret, access_token, access_token_secret
 
 
 class Application:
     def __init__(self):
+        load_dotenv()
         self.api = self.init_tweepy_api()
         self.classifier = Classifier()
         self.wd = os.path.dirname(__file__)
@@ -21,7 +23,11 @@ class Application:
 
     def init_tweepy_api(self):
         # Consumer keys and access tokens, used for OAuth
+        consumer_key = os.getenv("consumer_key")
+        consumer_secret = os.getenv("consumer_secret")
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+        access_token = os.getenv("access_token")
+        access_token_secret = os.getenv("access_token_secret")
         auth.set_access_token(access_token, access_token_secret)
 
         # Calling the api
@@ -36,7 +42,7 @@ class Application:
         tweets = clf.get_classified_df(tweets)
         return tweets
 
-    def get_corona_data(self):
+    def get_all_corona_data(self):
         corona_data = self.cd.data
         return corona_data
 
@@ -58,5 +64,5 @@ print(application.get_counties())
 """
 
 application = Application()
-#application.download_tweets()
+application.download_tweets()
 print(application.get_tweets_with_sentiment().head(50))

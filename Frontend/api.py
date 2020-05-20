@@ -14,12 +14,17 @@ def home():
     return render_template("index.html")
 
 
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
+
+
 # Routes for infections/death
 @app.route('/corona', methods=["GET"])
 @app.route('/corona/', methods=["GET"])
 @app.route('/corona/<county>', methods=["GET"])
 def infections(county=None):
-    corona_data = corona_app.get_corona_data()
+    corona_data = corona_app.get_all_corona_data()
     if county is None:
         response = df_to_dict(corona_data)
     else:
