@@ -5,7 +5,7 @@ startVisualization = () => {
   if (isRunning || isLoading) return;
   isRunning = true;
   console.log("Run");
-  interval = setInterval(update_interval, 1000);
+  interval = setInterval(update_interval, 1500);
 
   function update_interval() {
     if (date >= latestDate) {

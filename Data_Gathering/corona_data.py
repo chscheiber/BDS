@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import numpy as np
+from logzero import logger
 
 """
     CoronaData stores all information concerning Corona Cases/Deaths per US State     
@@ -12,28 +13,42 @@ class CoronaData:
         self.file_url = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv'
         self.file_name = 'us-counties.csv'
         self.base_dir = base_dir
-        self.data = self.__read_data()
+        self.file_path = f"{self.base_dir}/Data/{self.file_name}"
+
+        # Download files only when new file is available
+        if self.__update_necessary():
+            self.data = self.download_data()
+        else:
+            self.data = self.__read_data()
         self.end_date = self.__get_end_date()
 
-    def __read_data(self):
-        file_path = f"{self.base_dir}/Data/{self.file_name}"
-        if os.path.isfile(file_path):
-            df = pd.read_csv(file_path, index_col=0)
-            df = df.replace(np.nan, 0)
-
-        else:
-            df = pd.read_csv(self.file_url, index_col=0)
-            df.to_csv(file_path)
+    # Download latest corona data from NY-Times GitHub Repo
+    def download_data(self):
+        logger.info("Downloading latest corona data...")
+        df = pd.read_csv(self.file_url)
+        df = df.replace(np.nan, 0)
+        self.data = df
+        self.end_date = df.iloc[-1]["date"]
+        df.to_csv(self.file_path)
+        logger.info("Corona data updated!")
         return df
 
+    # Load stored corona data
+    def __read_data(self):
+        if os.path.isfile(self.file_path):
+            df = pd.read_csv(self.file_path, index_col=0)
+            df = df.replace(np.nan, 0)
+        else:
+            df = self.download_data()
+        return df
+
+    # Get the latest date for which corona data is stored
     def __get_end_date(self):
         return self.data.iloc[-1]["date"]
 
+    # TODO Implement Check if there is new corona data available
     def __update_necessary(self):
-        pass
-
-    def update_data(self):
-        pass
+        return False
 
 """
 b_dir = "C:/Users/chris/Documents/Studium/6 Semester/Big Data Science/BDS_Project"

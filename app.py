@@ -60,7 +60,6 @@ def corona_per_date(date=corona_app.end_date):
 @app.route('/aggregated/<date>')
 def aggregated(date=corona_app.end_date):
     data = corona_app.get_aggregated_corona_data(date)
-    print(data)
     return jsonify(cases=int(data["cases"]),
                    deaths=int(data["deaths"])), 200
 
@@ -95,16 +94,13 @@ Routes for Tweets
 # Get all tweets containing corona terms up to the specified date
 @app.route('/corona_tweets/<date>', methods=["GET"])
 def corona_tweets(date=corona_app.start_date):
-    all_tweets_reverse = corona_app.get_tweets_before(date)
-    all_tweets = all_tweets_reverse.iloc[::-1]
-    tweet_text = all_tweets["full_text"].to_list()
-    tweet_date = all_tweets["date"].apply(lambda d: datetime.strftime(d, '%Y-%m-%d')).to_list()
-    tweet_subjectivity = all_tweets["Subjectivity"].to_list()
-    tweet_polarity = all_tweets["Polarity"].to_list()
-    return jsonify(date=tweet_date,
-                   text=tweet_text,
-                   subjectivity=tweet_subjectivity,
-                   polarity=tweet_polarity), 200
+    return __transform_tweets(corona_app.get_tweets_before(date, corona_app.corona_tweets)), 200
+
+
+# Get all tweets up to the specified date
+@app.route('/all_tweets/<date>', methods=["GET"])
+def all_tweets(date=corona_app.start_date):
+    return __transform_tweets(corona_app.get_tweets_before(date, corona_app.all_tweets)), 200
 
 
 """
@@ -147,6 +143,37 @@ def deaths_until(date=corona_app.start_date):
 
 """
 -------------------------------------
+Admin Routes
+-------------------------------------
+"""
+
+
+@app.route('/corona_file_data')
+def corona_file_data():
+    return jsonify(file_name=corona_app.cd.file_name,
+                   file_size=200), 200
+
+
+@app.route('/twitter_file_data')
+def twitter_file_data():
+    return jsonify(file_name=corona_app.td.file_name,
+                   file_size=300), 200
+
+
+@app.route('/update_corona_data')
+def update_corona_data():
+    corona_app.cd.download_data()
+    return jsonify(msg="Download finished!"), 200
+
+
+@app.route('/update_twitter_data')
+def update_twitter_data():
+    corona_app.td.update_tweets()
+    return jsonify(msg="Update finished!"), 200
+
+
+"""
+-------------------------------------
 Helper functions
 -------------------------------------
 """
@@ -158,6 +185,18 @@ def df_to_dict(df):
     for index, row in df.iterrows():
         result[index] = dict(row)
     return result
+
+
+def __transform_tweets(tweets):
+    tweets = tweets.iloc[::-1]
+    tweet_text = tweets["full_text"].to_list()
+    tweet_date = tweets["date"].apply(lambda d: datetime.strftime(d, '%Y-%m-%d')).to_list()
+    tweet_subjectivity = tweets["Subjectivity"].to_list()
+    tweet_polarity = tweets["Polarity"].to_list()
+    return jsonify(date=tweet_date,
+                   text=tweet_text,
+                   subjectivity=tweet_subjectivity,
+                   polarity=tweet_polarity)
 
 
 if __name__ == '__main__':
