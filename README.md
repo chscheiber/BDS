@@ -56,6 +56,11 @@ Our API offers the following routes:
 /corona/\<county>
 - Returns all cases and deaths for all dates in the specified county
     * County must be specified as given in the us-counties.csv file. (Case-sensitive!)
+    
+/corona/\<county>/\<date>
+- Returns all cases and deaths for the specified date in the specified county
+    * County must be specified as given in the us-counties.csv file. (Case-sensitive!)
+    * Date must be specified in the following format: YYYY-MM-DD
 
 /corona_date/\<date>
 - Returns all cases and deaths for all counties on the specified date

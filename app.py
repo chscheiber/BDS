@@ -40,10 +40,14 @@ Routes for corona  data
 @app.route('/corona', methods=["GET"])
 @app.route('/corona/', methods=["GET"])
 @app.route('/corona/<county>', methods=["GET"])
-def infections(county=None):
+@app.route('/corona/<county>/<date>', methods=["GET"])
+def infections(county=None, date=None):
     corona_data = corona_app.get_all_corona_data()
     if county is None:
         response = df_to_dict(corona_data)
+    elif date is not None:
+        df = corona_app.get_corona_data_per_date(date)
+        response = df_to_dict(df[df.county == county])
     else:
         response = df_to_dict(corona_data[corona_data.county == county])
     return jsonify(response), 200
