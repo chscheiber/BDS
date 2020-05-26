@@ -51,15 +51,15 @@ def infections(county=None):
 
 # Get corona data for all counties for a specified date
 @app.route('/corona_date/<date>')
-def corona_per_date(date=corona_app.end_date):
+def corona_per_date(date=corona_app.cd.end_date):
     # TODO Change to list
     corona_data = corona_app.get_corona_data_per_date(date)
     return jsonify(df_to_dict(corona_data)), 200
 
 
-# Aggregates and returns all cases and deaths for the specified date
+# Returns all cases and deaths aggregated per county from the start date up to the specified date
 @app.route('/aggregated/<date>')
-def aggregated(date=corona_app.end_date):
+def aggregated(date=corona_app.cd.end_date):
     data = corona_app.get_aggregated_corona_data(date)
     return jsonify(cases=int(data["cases"]),
                    deaths=int(data["deaths"])), 200
@@ -94,13 +94,13 @@ Routes for Tweets
 
 # Get all tweets containing corona terms up to the specified date
 @app.route('/corona_tweets/<date>', methods=["GET"])
-def corona_tweets(date=corona_app.start_date):
+def corona_tweets(date=corona_app.cd.start_date):
     return __transform_tweets(corona_app.get_tweets_before(date, corona_app.corona_tweets)), 200
 
 
 # Get all tweets up to the specified date
 @app.route('/all_tweets/<date>', methods=["GET"])
-def all_tweets(date=corona_app.start_date):
+def all_tweets(date=corona_app.cd.start_date):
     return __transform_tweets(corona_app.get_tweets_before(date, corona_app.all_tweets)), 200
 
 
@@ -114,24 +114,24 @@ Routes for JS Scripts
 # Get start date for viz
 @app.route('/start_date')
 def start_date():
-    return jsonify(date=corona_app.start_date), 200
+    return jsonify(date=corona_app.cd.start_date), 200
 
 
 # Get end date for viz
 @app.route('/end_date')
 def end_date():
-    return jsonify(date=corona_app.end_date), 200
+    return jsonify(date=corona_app.cd.end_date), 200
 
 
 # Get only cases up to specified date
 @app.route('/cases_until/<date>')
-def cases_until(date=corona_app.start_date):
+def cases_until(date=corona_app.cd.start_date):
     return jsonify(cases=(int(date[0:4]) + int(date[8:10]))), 200
 
 
 # Get only deaths up to specified date
 @app.route('/deaths_until/<date>')
-def deaths_until(date=corona_app.start_date):
+def deaths_until(date=corona_app.cd.start_date):
     return jsonify(deaths=date[8:10]), 200
 
 
@@ -145,25 +145,29 @@ Admin Routes
 @app.route('/corona_file_data')
 def corona_file_data():
     return jsonify(file_name=corona_app.cd.file_name,
-                   file_size=200), 200
+                   file_size=corona_app.cd.file_size,
+                   start_date=corona_app.cd.start_date,
+                   end_date=corona_app.cd.end_date), 200
 
 
 @app.route('/twitter_file_data')
 def twitter_file_data():
     return jsonify(file_name=corona_app.td.file_name,
-                   file_size=300), 200
+                   file_size=corona_app.td.file_size,
+                   start_date=corona_app.td.start_date,
+                   end_date=corona_app.td.end_date), 200
 
 
 @app.route('/update_corona_data')
 def update_corona_data():
     corona_app.cd.download_data()
-    return jsonify(msg="Download finished!"), 200
+    return corona_file_data()
 
 
 @app.route('/update_twitter_data')
 def update_twitter_data():
     corona_app.td.update_tweets()
-    return jsonify(msg="Update finished!"), 200
+    return twitter_file_data()
 
 
 """

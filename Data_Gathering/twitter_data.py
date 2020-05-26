@@ -27,6 +27,9 @@ class TwitterData:
         self.corona_tweets = self.__read_corona_tweets()
         self.corona_tweets["date"] = self.corona_tweets["created_at"].apply(
             lambda d: datetime.strptime(d, '%Y-%m-%d %H:%M:%S'))
+        self.file_size = os.stat(self.path).st_size
+        self.start_date = "2020-02-01"
+        self.end_date = self.__get_end_date()
         logger.info("Loaded stored tweets")
 
     # Download all tweets which are more recent than the newest one stored in the Data Folder.
@@ -73,7 +76,7 @@ class TwitterData:
             return
         all_tweets.extend(new_tweets)
         oldest = all_tweets[-1].id - 1
-        logger.info(f"Downloading latest Tweets from {self.handle}")
+        logger.info(f"Downloading all Tweets from {self.handle}")
         while len(new_tweets) > 0:
             # Trying to avoid bumping into rate limit
             sleep(2)
@@ -114,11 +117,11 @@ class TwitterData:
 
     # Read corona tweets stored in the data folder and return it as pd.DataFrame
     def __read_corona_tweets(self):
-        file_path = f'{self.wd}/Data/Tweets/{self.handle}.csv'
-        if not os.path.isfile(file_path):
-            self.download_tweets()
         df = self.__read_all_tweets()
         pattern = '|'.join(corona_terms)
         df['cleaned_text'] = df.apply(lambda row: self.__clean_text(row['full_text']), axis=1)
         df = df[df.cleaned_text.str.contains(pattern)]
         return df
+
+    def __get_end_date(self):
+        return self.all_tweets.iloc[0]["created_at"][0:10]

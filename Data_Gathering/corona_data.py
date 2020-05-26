@@ -15,12 +15,15 @@ class CoronaData:
         self.base_dir = base_dir
         self.file_path = f"{self.base_dir}/Data/{self.file_name}"
 
-        # Download files only when new file is available
+        # Download files if necessary
         if self.__update_necessary():
             self.data = self.download_data()
         else:
             self.data = self.__read_data()
+        self.start_date = "2020-02-01"
         self.end_date = self.__get_end_date()
+        self.file_size = os.stat(self.file_path).st_size
+
 
     # Download latest corona data from NY-Times GitHub Repo
     def download_data(self):
@@ -29,6 +32,8 @@ class CoronaData:
         df = df.replace(np.nan, 0)
         self.data = df
         self.end_date = df.iloc[-1]["date"]
+        if os.path.isfile(self.file_path):
+            os.remove(self.file_path)
         df.to_csv(self.file_path)
         logger.info("Corona data updated!")
         return df
@@ -46,9 +51,8 @@ class CoronaData:
     def __get_end_date(self):
         return self.data.iloc[-1]["date"]
 
-    # TODO Implement Check if there is new corona data available
     def __update_necessary(self):
-        return False
+        return True
 
 """
 b_dir = "C:/Users/chris/Documents/Studium/6 Semester/Big Data Science/BDS_Project"

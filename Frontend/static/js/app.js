@@ -31,6 +31,7 @@ datePromises = [d3.json("/start_date"), d3.json("/end_date")];
 Promise.all(datePromises).then(([sDate, eDate]) => {
   startDate = stringToDate(sDate.date);
   latestDate = stringToDate(eDate.date);
+  console.log(eDate)
 });
 
 date = new Date(startDate);

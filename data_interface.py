@@ -23,8 +23,6 @@ class Application:
 
         # Loading corona data based on NY-Times sourcce
         self.cd = CoronaData(self.wd)
-        self.start_date = "2020-02-01"
-        self.end_date = self.cd.end_date
         self.counties = self.__read_counties()
 
         # Loading Tweets from Donald Trump

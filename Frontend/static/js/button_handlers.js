@@ -45,7 +45,10 @@ function handleForm(event) {
   }- ${latestDate.getDate()}`;
 
   tmpDate = stringToDate(tmpDate);
-  if (tmpDate == undefined || !(tmpDate >= startDate && tmpDate < new Date())) {
+  if (
+    tmpDate == undefined ||
+    !(tmpDate >= startDate && tmpDate <= latestDate)
+  ) {
     alert(error_msg);
     return;
   }
