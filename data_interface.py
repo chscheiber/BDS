@@ -77,29 +77,3 @@ class Application:
         file_path = f"{self.wd}/Data/fips_counties.csv"
         df = pd.read_csv(file_path)
         return df
-
-
-
-"""
-application = Application()
-print(application.get_corona_data_per_date("2020-02-15"))
-print(application.get_counties())
-
-
-application = Application()
-all_tweets = application.get_tweets_before("2020-04-01")
-tweet_text = all_tweets["full_text"]
-tweet_date = all_tweets["date"].apply(lambda d: datetime.strftime(d, '%Y-%m-%d'))
-tweet_subjectivity = all_tweets["Subjectivity"]
-tweet_polarity = all_tweets["Polarity"]
-
-print({
-    "date": tweet_date,
-    "text": tweet_text,
-    "subjectivity": tweet_sentiment,
-    "polarity": tweet_polarity
-})
-
-application = Application()
-application.get_aggregated_corona_data("2020-05-14")
-"""

@@ -35,6 +35,7 @@ class CoronaData:
         if os.path.isfile(self.file_path):
             os.remove(self.file_path)
         df.to_csv(self.file_path)
+        self.file_size = os.stat(self.file_path).st_size
         logger.info("Corona data updated!")
         return df
 
@@ -53,8 +54,3 @@ class CoronaData:
 
     def __update_necessary(self):
         return True
-
-"""
-b_dir = "C:/Users/chris/Documents/Studium/6 Semester/Big Data Science/BDS_Project"
-cd = CoronaData(b_dir)
-print(cd.end_date)"""

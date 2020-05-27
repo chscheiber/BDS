@@ -78,14 +78,6 @@ Our API offers the following routes:
 - Returns all tweets by Donald Trump up to the specified date
     * Date must be specified in the following format: YYYY-MM-DD
 
-/cases_until/\<date>
-- Returns the amount of cases up to specified date
-    * Date must be specified in the following format: YYYY-MM-DD
-
-/deaths_until/\<date>
-- Returns the amount of deaths up to specified date
-    * Date must be specified in the following format: YYYY-MM-DD
-
 /start_date
 - Returns the start date for visualization
 
@@ -94,7 +86,3 @@ Our API offers the following routes:
 
 /counties
 - Returns all US counties
-
-/Data/\<path>
-- Returns static files in Data folder
-

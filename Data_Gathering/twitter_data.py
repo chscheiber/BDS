@@ -62,7 +62,11 @@ class TwitterData:
         out_tweets = [[tweet.id_str, tweet.created_at, tweet.full_text.encode("utf-8")] for tweet in all_tweets]
         df_out_tweets = pd.DataFrame(out_tweets, columns=["id", "created_at", "full_text"])
         df = pd.concat([df_out_tweets, df])
+        if os.path.isfile(self.path):
+            os.remove(self.path)
         df.to_csv(self.path, index=False)
+        self.file_size = os.stat(self.path).st_size
+        self.end_date = df.iloc[0]["created_at"].strftime('%Y-%m-%d')
         return df
 
     # Download latest ~2000 Tweets from Donald Trump and store them in the data folder
@@ -88,13 +92,18 @@ class TwitterData:
 
         out_tweets = [[tweet.id_str, tweet.created_at, tweet.full_text.encode("utf-8")] for tweet in all_tweets]
         df = pd.DataFrame(out_tweets, columns=["id", "created_at", "full_text"])
+        if os.path.isfile(self.path):
+            os.remove(self.path)
         df.to_csv(self.path, index=False)
+        self.file_size = os.stat(self.path).st_size
+        self.end_date = self.__get_end_date()
         logger.info("Tweets downloaded!")
         return df
 
     # Removes unnecessary characters from string
     def __clean_text(self, text):
         cleaned_text = text.lower()
+        cleaned_text = re.sub(r'\\xe2\\x80\\x\S\S', '', cleaned_text)
         cleaned_text = re.sub(r'^[\'\"]?b', '', cleaned_text)
         cleaned_text = re.sub(r'@[A-Za-z0–9]+', '', cleaned_text)  # Removing @mentions
         cleaned_text = re.sub(r'https?://\S+', '', cleaned_text)  # Removing hyperlink

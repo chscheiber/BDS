@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, render_template, jsonify, send_from_directory
+from flask import Flask, render_template, jsonify
 
 from data_interface import Application
 
@@ -10,7 +10,6 @@ corona_app = Application()
 template_dir = f"{corona_app.wd}/Frontend/templates"
 static_dir = f"{corona_app.wd}/Frontend/static"
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
-
 
 """
 -------------------------------------
@@ -64,7 +63,8 @@ def corona_per_date(date=corona_app.cd.end_date):
 @app.route('/aggregated/<date>')
 def aggregated(date=corona_app.cd.end_date):
     data = corona_app.get_aggregated_corona_data(date)
-    return jsonify(cases=int(data["cases"]),
+    return jsonify(date=date,
+                   cases=int(data["cases"]),
                    deaths=int(data["deaths"])), 200
 
 
@@ -80,12 +80,6 @@ Routes for Static Data/ Data for Visualization
 def counties():
     all_counties = corona_app.counties
     return jsonify(df_to_dict(all_counties))
-
-
-# Get static files in Data folder
-@app.route('/Data/<path:path>')
-def send_file(path):
-    return send_from_directory('../Data', path)
 
 
 """
@@ -124,18 +118,6 @@ def start_date():
 @app.route('/end_date')
 def end_date():
     return jsonify(date=corona_app.cd.end_date), 200
-
-
-# Get only cases up to specified date
-@app.route('/cases_until/<date>')
-def cases_until(date=corona_app.cd.start_date):
-    return jsonify(cases=(int(date[0:4]) + int(date[8:10]))), 200
-
-
-# Get only deaths up to specified date
-@app.route('/deaths_until/<date>')
-def deaths_until(date=corona_app.cd.start_date):
-    return jsonify(deaths=date[8:10]), 200
 
 
 """
@@ -194,7 +176,7 @@ def __transform_tweets(tweets):
     tweets["date"] = tweets["date"].apply(lambda d: datetime.strftime(d, '%Y-%m-%d'))
     tweet_polarity = tweets.groupby(["date"])["Polarity"].mean().to_list()
     tweet_subjectivity = tweets.groupby(["date"])["Subjectivity"].mean().to_list()
-    tweet_text = tweets["full_text"].to_list()
+    tweet_text = tweets["cleaned_text"].to_list()
     tweet_date = tweets["date"].to_list()
     return jsonify(date=tweet_date,
                    text=tweet_text,
