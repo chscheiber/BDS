@@ -10,7 +10,6 @@ var margin = { top: 10, right: 30, bottom: 30, left: 60 },
     document.getElementById("sentiment-timeline").clientHeight -
     margin.top -
     margin.bottom;
-console.log(width);
 
 var sentimentSVG = d3
   .select("#sentiment-timeline")

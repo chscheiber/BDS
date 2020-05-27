@@ -24,7 +24,6 @@ drawMap = (date) => {
   Promise.all(promises).then(ready);
 
   function ready([us, d, counties]) {
-    console.log(d);
     for (var key in d) {
       curr_fips = +d[key].fips >= 10000 ? d[key].fips : "0" + d[key].fips;
       cases.set(curr_fips, +d[key].cases);

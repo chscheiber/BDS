@@ -56,7 +56,6 @@ def infections(county=None, date=None):
 # Get corona data for all counties for a specified date
 @app.route('/corona_date/<date>')
 def corona_per_date(date=corona_app.cd.end_date):
-    # TODO Change to list
     corona_data = corona_app.get_corona_data_per_date(date)
     return jsonify(df_to_dict(corona_data)), 200
 

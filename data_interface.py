@@ -1,8 +1,9 @@
 import pandas as pd
 import tweepy
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
+from logzero import logger
 
 from Data_Gathering.corona_data import CoronaData
 from Data_Gathering.twitter_data import TwitterData
@@ -49,8 +50,8 @@ class Application:
 
     # Filter tweets to only return tweets tweeted before the given date
     def get_tweets_before(self, date, tweets):
-        date = datetime.strptime(date, '%Y-%m-%d')
-        tweets_before_date = tweets[tweets["date"] <= date]
+        date = datetime.strptime(date, '%Y-%m-%d') + timedelta(days=1)
+        tweets_before_date = tweets[tweets["date"] < date]
         return tweets_before_date
 
     # Returns the whole corona dataset as pd.DataFrame
